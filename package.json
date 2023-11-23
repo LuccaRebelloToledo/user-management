@@ -1,0 +1,33 @@
+{
+  "name": "user-management",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "repository": "https://github.com/LuccaRebelloToledo/user-management.git",
+  "author": "LuccaRebelloToledo <luccarebtoledo@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec ts-node ./src/index.ts",
+    "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/migrations/default",
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
+    "lint": "eslint ./src --max-warnings 0 --fix"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.8.0",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.9.4",
+    "@types/uuid": "^9.0.7",
+    "eslint": "^8.54.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  }
+}
