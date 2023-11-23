@@ -10,9 +10,9 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   entities: [
-    `${__dirname}/**/entities/*.{ts, js}`
+    `${__dirname}/**/modules/infra/typeorm/entities/*.{ts, js}`
   ],
   migrations: [
-    `${__dirname}/**/migrations/*.{ts, js}`
-  ]
+    `${__dirname}/**/shared/infra/http/typeorm/migrations/*.{ts, js}`
+  ],
 })
