@@ -22,14 +22,14 @@ class UsersRepository implements IUsersRepository {
         throw new Error("Method not implemented.");
     }
     
-    public async findById(userData: IFindUserByIdDTO): Promise<User | null> {
-        let user = await this.userRepository.findOne({ where: { id: userData.id } });
+    public async findById(userId: IFindUserByIdDTO): Promise<User | null> {
+        let user = await this.userRepository.findOne({ where: { id: userId.id } });
         
         return user;
     }
 
-    public async findByEmail(userData: IFindUserByEmailDTO): Promise<User | null> {
-        let user = await this.userRepository.findOne({ where: { email: userData.email } });
+    public async findByEmail(userEmail: IFindUserByEmailDTO): Promise<User | null> {
+        let user = await this.userRepository.findOne({ where: { email: userEmail.email } });
         
         return user;
     }
