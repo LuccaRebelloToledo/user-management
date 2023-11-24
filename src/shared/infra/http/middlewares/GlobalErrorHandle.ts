@@ -11,27 +11,26 @@ export default function globalErrorHandler(
   request: Request,
   response: Response,
   _next: NextFunction,
-): Response {
-  const errorData = {
-    error: err,
-    message: err.message,
-    requestUrl: request.url,
-    requestMethod: request.method,
-    requestHeaders: request.headers,
-    requestQuery: request.query,
-    requestParams: request.params,
-    requestBody: request.body,
-    requestBodyStringified: JSON.stringify(request.body),
-    statusCode: request.statusCode,
-    statusMessage: request.statusMessage,
+  ): Response {
+    const errorData = {
+      error: err,
+      message: err.message,
+      requestUrl: request.url,
+      requestMethod: request.method,
+      requestHeaders: request.headers,
+      requestQuery: request.query,
+      requestParams: request.params,
+      requestBody: request.body,
+      requestBodyStringified: JSON.stringify(request.body),
+      statusCode: request.statusCode,
+      statusMessage: request.statusMessage,
   };
 
-  // eslint-disable-next-line no-console
   console.error(err);
 
   if (isCelebrateError(err)) {
     const validation: Record<string, unknown> = {};
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const [segment, joiError] of err.details.entries()) {
       validation[segment] = {
         source: segment,
