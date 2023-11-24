@@ -4,7 +4,7 @@ class AppError extends Error {
   
     constructor(
       appErrorType: string,
-      statusCode = 400,
+      statusCode: number,
     ) {
       super();
       this.name = `Error: ${appErrorType}`;
