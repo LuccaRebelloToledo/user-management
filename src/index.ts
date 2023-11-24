@@ -8,8 +8,8 @@ AppDataSource.initialize().then(() => {
   app.use(express.json());
   app.use(routers);
 
-  app.listen(process.env.PORT ?? 3333, () => {
-    console.log('Server is running: ' + process.env.PORT ?? 3333);
+  app.listen(process.env.PORT || 3333, () => {
+    console.log('Server is running: ' + process.env.PORT || 3333);
   });
 
 });

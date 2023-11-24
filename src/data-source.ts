@@ -15,4 +15,4 @@ export const AppDataSource = new DataSource({
   migrations: [
     `${__dirname}/**/shared/infra/http/typeorm/migrations/*.{ts, js}`
   ],
-})
+});

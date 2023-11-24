@@ -1,7 +1,12 @@
-import { inject, injectable } from "tsyringe";
+import { delay, inject, injectable } from "tsyringe";
+
+import IHashProvider from "../providers/hash-provider/models/IHashProvider";
+import BCryptHashProvider from "../providers/hash-provider/implementations/BCryptHashProvider";
+
+import UsersRepository from "../infra/typeorm/repositories/UsersRepository";
 import IUsersRepository from "../repositories/IUsersRepository";
 import User from "../infra/typeorm/entities/User";
-import IHashProvider from "../providers/hash-provider/models/IHashProvider";
+
 import AppError from "../../../shared/infra/errors/AppError";
 import { AppErrorType } from "../../../shared/infra/errors/AppErrorType";
 
@@ -15,11 +20,11 @@ interface ICreateUsersServiceDTO {
 class CreateUsersService {
 
     constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject(delay(() => UsersRepository)) 
+    public usersRepository: IUsersRepository,
 
-    @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    @inject(delay(() => BCryptHashProvider)) 
+    public hashProvider: IHashProvider,
     ) {}
 
     public async execute({

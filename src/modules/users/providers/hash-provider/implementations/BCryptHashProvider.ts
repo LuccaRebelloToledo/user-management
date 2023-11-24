@@ -1,6 +1,9 @@
 import { hash, compare } from 'bcryptjs';
+import { singleton } from 'tsyringe';
+
 import IHashProvider from '../models/IHashProvider';
 
+@singleton()
 class BCryptHashProvider implements IHashProvider {
   public async generateHash(payload: string): Promise<string> {
     return hash(payload, 8);
