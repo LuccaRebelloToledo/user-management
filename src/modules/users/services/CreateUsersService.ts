@@ -5,10 +5,11 @@ import BCryptHashProvider from "../providers/hash-provider/implementations/BCryp
 
 import UsersRepository from "../infra/typeorm/repositories/UsersRepository";
 import IUsersRepository from "../repositories/IUsersRepository";
-import User from "../infra/typeorm/entities/User";
 
 import AppError from "../../../shared/infra/errors/AppError";
 import { AppErrorType } from "../../../shared/infra/errors/AppErrorType";
+
+import IListUserResponseDTO from "../dtos/IListUserResponseDTO";
 
 interface ICreateUsersServiceDTO {
   email: string;
@@ -30,22 +31,26 @@ class CreateUsersService {
     email,
     password,
     name,
-  }: ICreateUsersServiceDTO): Promise<User> {
-    let existingUsers = await this.usersRepository.findByEmail({ email });
+  }: ICreateUsersServiceDTO): Promise<IListUserResponseDTO> {
+    const existingUser = await this.usersRepository.findByEmail({ email });
 
-    if (existingUsers) {
+    if (existingUser) {
       throw new AppError(AppErrorType.users.emailAlreadyInUse, 302);
     }
 
-    let hashedPassword = await this.hashProvider.generateHash(password);
+    const hashedPassword = await this.hashProvider.generateHash(password);
 
-    let user = await this.usersRepository.create({
+    const user = await this.usersRepository.create({
       email: String(email).toLowerCase(),
       password: hashedPassword,
       name,
     });
 
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    };
   }
 }
 
