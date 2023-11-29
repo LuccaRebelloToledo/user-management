@@ -1,14 +1,15 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
     "title": "User Management",
     "description": "Rest API for user management!"
   },
-  "host": "localhost:4000",
-  "basePath": "/",
-  "schemes": [
-    "http"
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Web API Server"
+    }
   ],
   "paths": {
     "/users/": {
@@ -16,35 +17,116 @@
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/GetAllUserRequest"
+                },
+                "examples": {
+                  "1": {
+                    "type": "array",
+                    "$ref": "#/components/examples/GetAllUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "1": {
+                    "$ref": "#/components/examples/NotFound"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "1": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
                 },
-                "password": {
-                  "example": "any"
+                "examples": {
+                  "1": {
+                    "$ref": "#/components/examples/CreateUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
                 },
-                "name": {
-                  "example": "any"
+                "examples": {
+                  "1": {
+                    "$ref": "#/components/examples/EmailAlreadyInUse"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "1": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
                 }
               }
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              },
+              "examples": {
+                "1": {
+                  "$ref": "#/components/examples/CreateUserRequest"
+                }
+              }
+            }
           }
         }
       }
@@ -57,7 +139,9 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -73,30 +157,34 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "name": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "name": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -107,7 +195,9 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -124,6 +214,120 @@
           "200": {
             "description": "OK"
           }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetAllUserRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "password": {
+            "type": "string",
+            "example": "Password"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "name"
+        ]
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        }
+      },
+      "GlobalError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Status Code Message"
+          },
+          "message": {
+            "type": "string",
+            "example": "Message Error"
+          }
+        }
+      }
+    },
+    "examples": {
+      "GetAllUserResponse": {
+        "value": {
+          "id": "ccc36944-e633-41c0-a119-2616cb70968d",
+          "email": "johndoe@gmail.com",
+          "name": "John Doe"
+        }
+      },
+      "CreateUserRequest": {
+        "value": {
+          "$email": "johndoe@gmail.com",
+          "$password": "123456JohnDoe",
+          "$name": "John Doe"
+        }
+      },
+      "CreateUserResponse": {
+        "value": {
+          "id": "ccc36944-e633-41c0-a119-2616cb70968d",
+          "email": "johndoe@gmail.com",
+          "name": "John Doe"
+        }
+      },
+      "InternalServerError": {
+        "value": {
+          "status": "Internal Server Error",
+          "message": "internal-server-error"
+        }
+      },
+      "EmailAlreadyInUse": {
+        "value": {
+          "status": "Founded",
+          "message": "email-already-in-use"
+        }
+      },
+      "NotFound": {
+        "value": {
+          "status": "Not Found",
+          "message": "user-not-found"
         }
       }
     }

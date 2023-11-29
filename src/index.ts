@@ -13,7 +13,7 @@ void AppDataSource.initialize().then(() => {
   app.use(routers);
   app.use(globalErrorHandler);
 
-  app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
   app.listen(process.env.PORT ?? 4000, () => {
     console.log("Server is running: " + process.env.PORT || 4000);
