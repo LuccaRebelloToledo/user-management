@@ -1,29 +1,29 @@
-import { Request, Response, NextFunction } from 'express';
-import * as Sentry from '@sentry/node';
+import { Request, Response, NextFunction } from "express";
+import * as Sentry from "@sentry/node";
 
-import AppError from '../../errors/AppError';
-import { isCelebrateError } from 'celebrate';
-import EscapeHtml from 'escape-html';
-import http from 'http';
+import AppError from "../../errors/AppError";
+import { isCelebrateError } from "celebrate";
+import EscapeHtml from "escape-html";
+import http from "http";
 
 export default function globalErrorHandler(
   err: Error,
   request: Request,
   response: Response,
-  _next: NextFunction,
-  ): Response {
-    const errorData = {
-      error: err,
-      message: err.message,
-      requestUrl: request.url,
-      requestMethod: request.method,
-      requestHeaders: request.headers,
-      requestQuery: request.query,
-      requestParams: request.params,
-      requestBody: request.body,
-      requestBodyStringified: JSON.stringify(request.body),
-      statusCode: request.statusCode,
-      statusMessage: request.statusMessage,
+  _next: NextFunction
+): Response {
+  const errorData = {
+    error: err,
+    message: err.message,
+    requestUrl: request.url,
+    requestMethod: request.method,
+    requestHeaders: request.headers,
+    requestQuery: request.query,
+    requestParams: request.params,
+    requestBody: request.body,
+    requestBodyStringified: JSON.stringify(request.body),
+    statusCode: request.statusCode,
+    statusMessage: request.statusMessage,
   };
 
   console.error(err);
@@ -35,7 +35,7 @@ export default function globalErrorHandler(
       validation[segment] = {
         source: segment,
         keys: JSON.stringify(
-          joiError.details.map((detail) => EscapeHtml(detail.path.join('.'))),
+          joiError.details.map((detail) => EscapeHtml(detail.path.join(".")))
         ),
         message: joiError.message,
       };
@@ -66,7 +66,7 @@ export default function globalErrorHandler(
           ...errorData,
           validation,
         },
-      },
+      }
     );
 
     return response.status(400).json(validationError);
@@ -78,13 +78,13 @@ export default function globalErrorHandler(
       extra: {
         ...errorData,
         responseMessage: err.message,
-        responseStatusCode: err.statusCode
+        responseStatusCode: err.statusCode,
       },
     });
 
     return response.status(err.statusCode).json({
       status: http.STATUS_CODES[err.statusCode],
-      message: err.appErrorType
+      message: err.appErrorType,
     });
   }
 
@@ -95,6 +95,6 @@ export default function globalErrorHandler(
 
   return response.status(500).json({
     status: http.STATUS_CODES[500],
-    message: 'internal-server-error',
+    message: "internal-server-error",
   });
 }

@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import 'reflect-metadata';
+import "dotenv/config";
+import "reflect-metadata";
 import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
@@ -9,10 +9,8 @@ export const AppDataSource = new DataSource({
   username: process.env.PG_USER,
   password: process.env.PG_PASS,
   database: process.env.PG_DB,
-  entities: [
-    `${__dirname}/**/modules/**/infra/typeorm/entities/*.{ts, js}`
-  ],
+  entities: [`${__dirname}/**/modules/**/infra/typeorm/entities/*.{ts, js}`],
   migrations: [
-    `${__dirname}/**/shared/infra/http/typeorm/migrations/*.{ts, js}`
+    `${__dirname}/**/shared/infra/http/typeorm/migrations/*.{ts, js}`,
   ],
 });

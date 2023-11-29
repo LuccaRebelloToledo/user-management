@@ -1,7 +1,7 @@
-import { hash, compare } from 'bcryptjs';
-import { singleton } from 'tsyringe';
+import { hash, compare } from "bcryptjs";
+import { singleton } from "tsyringe";
 
-import IHashProvider from '../models/IHashProvider';
+import IHashProvider from "../models/IHashProvider";
 
 @singleton()
 class BCryptHashProvider implements IHashProvider {

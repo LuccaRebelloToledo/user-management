@@ -12,47 +12,48 @@ import IUpdateUserDTO from "../../../dtos/IUpdateUserDTO";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../../../data-source";
 
-
 @singleton()
 class UsersRepository implements IUsersRepository {
+  private usersRepository: Repository<User>;
 
-    private usersRepository : Repository<User>;
-    
-    constructor(){
-        this.usersRepository = AppDataSource.getRepository(User);
-    }
+  constructor() {
+    this.usersRepository = AppDataSource.getRepository(User);
+  }
 
-    public async findAll(userData: IListUserDTO): Promise<IListUserResponseDTO> {
-        throw new Error("Method not implemented.");
-    }
-    
-    public async findById(userId: IFindUserByIdDTO): Promise<User | null> {
-        let user = await this.usersRepository.findOne({ where: { id: userId.id } });
-        
-        return user;
-    }
+  public async findAll(userData: IListUserDTO): Promise<IListUserResponseDTO> {
+    throw new Error("Method not implemented.");
+  }
 
-    public async findByEmail(userEmail: IFindUserByEmailDTO): Promise<User | null> {
-        let user = await this.usersRepository.findOne({ where: { email: userEmail.email } });
-        
-        return user;
-    }
+  public async findById(userId: IFindUserByIdDTO): Promise<User | null> {
+    let user = await this.usersRepository.findOne({ where: { id: userId.id } });
 
-    public async create(userData: ICreateUserDTO): Promise<User> {
-        let user = this.usersRepository.create(userData);
-        await this.usersRepository.save(userData);
-    
-        return user;
-    }
+    return user;
+  }
 
-    public async update(userData: IUpdateUserDTO): Promise<User> {
-        throw new Error("Method not implemented.");
-    }
+  public async findByEmail(
+    userEmail: IFindUserByEmailDTO
+  ): Promise<User | null> {
+    let user = await this.usersRepository.findOne({
+      where: { email: userEmail.email },
+    });
 
-    public async delete(userId: string): Promise<void> {
-        await this.usersRepository.delete(userId);
-    }
-    
+    return user;
+  }
+
+  public async create(userData: ICreateUserDTO): Promise<User> {
+    let user = this.usersRepository.create(userData);
+    await this.usersRepository.save(userData);
+
+    return user;
+  }
+
+  public async update(userData: IUpdateUserDTO): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
+
+  public async delete(userId: string): Promise<void> {
+    await this.usersRepository.delete(userId);
+  }
 }
 
 export default UsersRepository;

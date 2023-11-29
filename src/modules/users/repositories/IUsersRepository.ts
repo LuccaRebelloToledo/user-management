@@ -1,11 +1,11 @@
-import User from '../infra/typeorm/entities/User';
+import User from "../infra/typeorm/entities/User";
 
-import ICreateUserDTO from '../dtos/ICreateUserDTO';
-import IListUserDTO from '../dtos/IListUserDTO';
-import IFindUserByEmailDTO from '../dtos/IFindUserByEmailDTO';
-import IListUserResponseDTO from '../dtos/IListUserResponseDTO';
-import IFindUserByIdDTO from '../dtos/IFindUserByIdDTO';
-import IUpdateUserDTO from '../dtos/IUpdateUserDTO';
+import ICreateUserDTO from "../dtos/ICreateUserDTO";
+import IListUserDTO from "../dtos/IListUserDTO";
+import IFindUserByEmailDTO from "../dtos/IFindUserByEmailDTO";
+import IListUserResponseDTO from "../dtos/IListUserResponseDTO";
+import IFindUserByIdDTO from "../dtos/IFindUserByIdDTO";
+import IUpdateUserDTO from "../dtos/IUpdateUserDTO";
 
 export default interface IUsersRepository {
   findAll(userData: IListUserDTO): Promise<IListUserResponseDTO>;

@@ -1,3 +1,1 @@
-export default interface IListUserResponseDTO {
-    
-}
+export default interface IListUserResponseDTO {}
