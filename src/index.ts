@@ -12,6 +12,6 @@ void AppDataSource.initialize().then(() => {
   app.use(globalErrorHandler);
 
   app.listen(process.env.PORT ?? 4000, () => {
-    console.log(("Server is running: " + process.env.PORT).length > 0 || 4000);
+    console.log("Server is running: " + process.env.PORT || 4000);
   });
 });
