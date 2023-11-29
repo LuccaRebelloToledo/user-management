@@ -8,8 +8,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node ./src/index.ts",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/shared/infra/http/typeorm/migrations/default",
-    "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
-    "lint": "eslint ./src --max-warnings 0 --fix"
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run"
   },
   "dependencies": {
     "@sentry/node": "^7.81.1",
@@ -32,7 +31,6 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.9.4",
     "@types/uuid": "^9.0.7",
-    "eslint": "^8.54.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
