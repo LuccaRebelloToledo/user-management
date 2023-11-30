@@ -1,8 +1,12 @@
 import { AppDataSource } from "./data-source";
-import "express-async-errors";
+
 import express from "express";
+import "express-async-errors";
+
 import routers from "./shared/infra/http/routers/index";
+
 import globalErrorHandler from "./shared/infra/http/middlewares/GlobalErrorHandle";
+
 import swaggerUi from "swagger-ui-express";
 import swaggerFile from "./swagger_output.json";
 
