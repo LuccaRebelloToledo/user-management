@@ -2,8 +2,8 @@ import "dotenv";
 
 const swaggerAutogen = require("swagger-autogen")({ openapi: "3.0.0" });
 
-const outputFile = "./swagger_output.json";
-const endpointsFiles = [`${__dirname}/**/shared/infra/http/routers/*.{ts, js}`];
+const outputFile = `../swagger_output.json`;
+const endpointsFiles = [`../shared/infra/http/routers/*.{ts, js}`];
 
 const doc = {
   info: {
