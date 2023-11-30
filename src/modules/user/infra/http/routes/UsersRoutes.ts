@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
 
+import ensureAuthenticated from "../../../../user_tokens/infra/http/middlewares/ensureAuthenticated";
+
 import CreateUsersController from "../controllers/CreateUsersController";
 import FindAllUsersController from "../controllers/FindAllUsersController";
-import FindByEmailUsersController from "../controllers/FindByEmailUsersController";
 import FindByIdUsersController from "../controllers/FindByIdUsersController";
 import DeleteUsersController from "../controllers/DeleteUsersController";
 import UpdateUsersController from "../controllers/UpdateUsersController";
@@ -12,13 +13,16 @@ const usersRoutes = Router();
 
 const createUsersController = new CreateUsersController();
 const findAllUsersController = new FindAllUsersController();
-const findByEmailUsersController = new FindByEmailUsersController();
 const findByIdUsersController = new FindByIdUsersController();
 const deleteUsersController = new DeleteUsersController();
 const updateUsersController = new UpdateUsersController();
 
 usersRoutes.get(
-  "/",
+  // #swagger.tags = ['User']
+  /* #swagger.security = [{
+            "bearerAuth": []
+    }] 
+  */
   /*
     #swagger.responses[200] = {
             description: "Ok",
@@ -58,32 +62,25 @@ usersRoutes.get(
                 }           
             } 
   */
+  "/",
+  ensureAuthenticated,
   findAllUsersController.handle
 );
 
 usersRoutes.get(
+  // #swagger.tags = ['User']
   "/:userId",
   celebrate({
     [Segments.PARAMS]: Joi.object({
       userId: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   findByIdUsersController.handle
 );
 
-usersRoutes.get(
-  "/email",
-  celebrate({
-    [Segments.BODY]: Joi.object({
-      email: Joi.string().email().lowercase().required(),
-    }),
-  }),
-  findByEmailUsersController.handle
-);
-
 usersRoutes.post(
-  "/",
-
+  // #swagger.tags = ['User']
   /* 
     #swagger.requestBody = {
               required: true,
@@ -136,7 +133,7 @@ usersRoutes.post(
                 }           
             } 
   */
-
+  "/",
   celebrate({
     [Segments.BODY]: Joi.object({
       email: Joi.string().email().lowercase().required(),
@@ -148,6 +145,7 @@ usersRoutes.post(
 );
 
 usersRoutes.put(
+  // #swagger.tags = ['User']
   "/:userId",
   celebrate({
     [Segments.PARAMS]: Joi.object({
@@ -159,16 +157,19 @@ usersRoutes.put(
       name: Joi.string().max(30).required(),
     }),
   }),
+  ensureAuthenticated,
   updateUsersController.handle
 );
 
 usersRoutes.delete(
+  // #swagger.tags = ['User']
   "/:userId",
   celebrate({
     [Segments.PARAMS]: Joi.object({
       userId: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   deleteUsersController.handle
 );
 
