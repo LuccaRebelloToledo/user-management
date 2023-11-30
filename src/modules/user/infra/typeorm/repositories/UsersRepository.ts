@@ -25,7 +25,7 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async findById(userId: IFindUserByIdDTO): Promise<User | null> {
+  public async findById(userId: IFindUserByIdDTO): Promise<User | undefined> {
     const user = await this.usersRepository.findOne({
       where: { id: userId.id },
     });
@@ -33,13 +33,11 @@ class UsersRepository implements IUsersRepository {
     if (user) {
       return user;
     }
-
-    return null;
   }
 
   public async findByEmail(
     userEmail: IFindUserByEmailDTO
-  ): Promise<User | null> {
+  ): Promise<User | undefined> {
     const user = await this.usersRepository.findOne({
       where: { email: userEmail.email },
     });
@@ -47,8 +45,6 @@ class UsersRepository implements IUsersRepository {
     if (user) {
       return user;
     }
-
-    return null;
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
