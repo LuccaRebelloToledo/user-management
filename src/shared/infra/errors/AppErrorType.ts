@@ -5,4 +5,12 @@ export const AppErrorType = {
     tokenNotFound: "user-token-not-found",
     expiredToken: "user-token-expired",
   },
+  sessions: {
+    authenticationError: "authentication-error",
+    expiredToken: "auth-token-expired",
+    invalidTokenFormat: "invalid-token-format",
+    invalidCredentials: "invalid-credentials",
+    invalidRefreshToken: "invalid-refresh-token",
+    tokenNotFound: "auth-token-not-found",
+  },
 };
