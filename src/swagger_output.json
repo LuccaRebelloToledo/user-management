@@ -20,21 +20,67 @@
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User session successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionUserResponse"
+                },
+                "examples": {
+                  "UserSessionSuccessfully": {
+                    "$ref": "#/components/examples/SessionUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Celebrate Errors And Credentials Invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateBodyEmailRequired": {
+                    "$ref": "#/components/examples/CelebrateUserEmailRequiredErrorResponse"
+                  },
+                  "CelebrateBodyNameRequired": {
+                    "$ref": "#/components/examples/CelebrateUserNameRequiredErrorResponse"
+                  },
+                  "CredentialsInvalid": {
+                    "$ref": "#/components/examples/CredentialsInvalid"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  }
+                "$ref": "#/components/schemas/SessionUserRequest"
+              },
+              "examples": {
+                "UpdateUserRequest": {
+                  "$ref": "#/components/examples/SessionUserRequest"
                 }
               }
             }
@@ -50,59 +96,54 @@
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "refreshToken": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Ok",
+            "description": "Token User refreshed successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "$ref": "#/components/schemas/GetAllUserRequest"
+                  "$ref": "#/components/schemas/RefreshUserTokenResponse"
                 },
                 "examples": {
-                  "1": {
-                    "type": "array",
-                    "$ref": "#/components/examples/GetAllUserResponse"
+                  "TokenUserRefreshedSuccessfully": {
+                    "$ref": "#/components/examples/RefreshUserTokenResponse"
                   }
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found",
+          "400": {
+            "description": "Celebrate Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateBodyRefreshToken": {
+                    "$ref": "#/components/examples/CelebrateRefreshTokenRequiredErrorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Auth Tokens Errors",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GlobalError"
                 },
                 "examples": {
-                  "1": {
-                    "$ref": "#/components/examples/NotFound"
+                  "AuthTokenNotFound": {
+                    "$ref": "#/components/examples/AuthTokenNotFound"
+                  },
+                  "InvalidTokenFormat": {
+                    "$ref": "#/components/examples/InvalidTokenFormat"
+                  },
+                  "InvalidToken": {
+                    "$ref": "#/components/examples/InvalidToken"
+                  },
+                  "JwtMalformed": {
+                    "$ref": "#/components/examples/JwtMalformed"
                   }
                 }
               }
@@ -116,7 +157,7 @@
                   "$ref": "#/components/schemas/GlobalError"
                 },
                 "examples": {
-                  "1": {
+                  "InternalServerError": {
                     "$ref": "#/components/examples/InternalServerError"
                   }
                 }
@@ -128,23 +169,40 @@
           {
             "bearerAuth": []
           }
-        ]
-      },
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshUserTokenRequest"
+              },
+              "examples": {
+                "RefreshUserTokenRequest": {
+                  "$ref": "#/components/examples/RefreshUserTokenRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
       "post": {
         "tags": [
-          "Users"
+          "User"
         ],
         "description": "",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "User created successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateUserResponse"
                 },
                 "examples": {
-                  "1": {
+                  "UserCreatedSuccessfully": {
                     "$ref": "#/components/examples/CreateUserResponse"
                   }
                 }
@@ -159,8 +217,35 @@
                   "$ref": "#/components/schemas/GlobalError"
                 },
                 "examples": {
-                  "1": {
+                  "EmailAlreadyInUse": {
                     "$ref": "#/components/examples/EmailAlreadyInUse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Celebrate Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateBodyEmailRequired": {
+                    "$ref": "#/components/examples/CelebrateUserEmailRequiredErrorResponse"
+                  },
+                  "CelebrateUserPasswordRequired": {
+                    "$ref": "#/components/examples/CelebrateUserPasswordRequiredErrorResponse"
+                  },
+                  "CelebrateBodyNameRequired": {
+                    "$ref": "#/components/examples/CelebrateUserNameRequiredErrorResponse"
+                  },
+                  "CelebrateBodyPassword": {
+                    "$ref": "#/components/examples/CelebrateUserPasswordErrorResponse"
+                  },
+                  "CelebrateBodyName": {
+                    "$ref": "#/components/examples/CelebrateUserNameErrorResponse"
                   }
                 }
               }
@@ -174,7 +259,7 @@
                   "$ref": "#/components/schemas/GlobalError"
                 },
                 "examples": {
-                  "1": {
+                  "InternalServerError": {
                     "$ref": "#/components/examples/InternalServerError"
                   }
                 }
@@ -190,19 +275,103 @@
                 "$ref": "#/components/schemas/CreateUserRequest"
               },
               "examples": {
-                "1": {
+                "CreateUserRequest": {
                   "$ref": "#/components/examples/CreateUserRequest"
                 }
               }
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "User(s) found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/GetAllUserRequest"
+                },
+                "examples": {
+                  "User(s)FoundSuccessfully": {
+                    "type": "array",
+                    "$ref": "#/components/examples/GetAllUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Auth Tokens Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "AuthTokenNotFound": {
+                    "$ref": "#/components/examples/AuthTokenNotFound"
+                  },
+                  "InvalidTokenFormat": {
+                    "$ref": "#/components/examples/InvalidTokenFormat"
+                  },
+                  "InvalidToken": {
+                    "$ref": "#/components/examples/InvalidToken"
+                  },
+                  "JwtMalformed": {
+                    "$ref": "#/components/examples/JwtMalformed"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "NotFound": {
+                    "$ref": "#/components/examples/NotFound"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/users/{userId}": {
       "get": {
         "tags": [
-          "Users"
+          "User"
         ],
         "description": "",
         "parameters": [
@@ -217,13 +386,99 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserRequest"
+                },
+                "examples": {
+                  "UserFoundSuccessfully": {
+                    "$ref": "#/components/examples/GetUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Celebrate Params Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateParamsError": {
+                    "$ref": "#/components/examples/CelebrateParamsErrorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Auth Tokens Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "AuthTokenNotFound": {
+                    "$ref": "#/components/examples/AuthTokenNotFound"
+                  },
+                  "InvalidTokenFormat": {
+                    "$ref": "#/components/examples/InvalidTokenFormat"
+                  },
+                  "InvalidToken": {
+                    "$ref": "#/components/examples/InvalidToken"
+                  },
+                  "JwtMalformed": {
+                    "$ref": "#/components/examples/JwtMalformed"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "NotFound": {
+                    "$ref": "#/components/examples/NotFound"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
-          "Users"
+          "User"
         ],
         "description": "",
         "parameters": [
@@ -238,24 +493,117 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponse"
+                },
+                "examples": {
+                  "UserUpdatedSuccessfully": {
+                    "$ref": "#/components/examples/UpdateUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "EmailAlreadyInUse": {
+                    "$ref": "#/components/examples/EmailAlreadyInUse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Celebrate Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateParams": {
+                    "$ref": "#/components/examples/CelebrateParamsErrorResponse"
+                  },
+                  "CelebrateBodyEmailRequired": {
+                    "$ref": "#/components/examples/CelebrateUserEmailRequiredErrorResponse"
+                  },
+                  "CelebrateBodyNameRequired": {
+                    "$ref": "#/components/examples/CelebrateUserNameRequiredErrorResponse"
+                  },
+                  "CelebrateBodyPassword": {
+                    "$ref": "#/components/examples/CelebrateUserPasswordErrorResponse"
+                  },
+                  "CelebrateBodyName": {
+                    "$ref": "#/components/examples/CelebrateUserNameErrorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Auth Tokens Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "AuthTokenNotFound": {
+                    "$ref": "#/components/examples/AuthTokenNotFound"
+                  },
+                  "InvalidTokenFormat": {
+                    "$ref": "#/components/examples/InvalidTokenFormat"
+                  },
+                  "InvalidToken": {
+                    "$ref": "#/components/examples/InvalidToken"
+                  },
+                  "JwtMalformed": {
+                    "$ref": "#/components/examples/JwtMalformed"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  },
-                  "name": {
-                    "example": "any"
-                  }
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              },
+              "examples": {
+                "UpdateUserRequest": {
+                  "$ref": "#/components/examples/UpdateUserRequest"
                 }
               }
             }
@@ -264,7 +612,7 @@
       },
       "delete": {
         "tags": [
-          "Users"
+          "User"
         ],
         "description": "",
         "parameters": [
@@ -278,16 +626,129 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "User deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserRequest"
+                },
+                "examples": {
+                  "UserDeletedSuccessfully": {
+                    "$ref": "#/components/examples/GetUserResponse"
+                  }
+                }
+              }
+            }
+          },
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Celebrate Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CelebrateErrors"
+                },
+                "examples": {
+                  "CelebrateParams": {
+                    "$ref": "#/components/examples/CelebrateParamsErrorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Auth Tokens Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "AuthTokenNotFound": {
+                    "$ref": "#/components/examples/AuthTokenNotFound"
+                  },
+                  "InvalidTokenFormat": {
+                    "$ref": "#/components/examples/InvalidTokenFormat"
+                  },
+                  "InvalidToken": {
+                    "$ref": "#/components/examples/InvalidToken"
+                  },
+                  "JwtMalformed": {
+                    "$ref": "#/components/examples/JwtMalformed"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "NotFound": {
+                    "$ref": "#/components/examples/NotFound"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlobalError"
+                },
+                "examples": {
+                  "InternalServerError": {
+                    "$ref": "#/components/examples/InternalServerError"
+                  }
+                }
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "GetAllUserRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        }
+      },
+      "GetUserRequest": {
         "type": "object",
         "properties": {
           "id": {
@@ -326,6 +787,27 @@
           "name"
         ]
       },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "password": {
+            "type": "string",
+            "example": "Password"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        },
+        "required": [
+          "email",
+          "name"
+        ]
+      },
       "CreateUserResponse": {
         "type": "object",
         "properties": {
@@ -343,6 +825,92 @@
           }
         }
       },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "E-mail"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          }
+        }
+      },
+      "SessionUserResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "uuid"
+              },
+              "email": {
+                "type": "string",
+                "example": "E-mail"
+              },
+              "name": {
+                "type": "string",
+                "example": "Name"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "example": "token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "refreshToken"
+          }
+        }
+      },
+      "CelebrateErrors": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "string",
+            "example": "Status Code"
+          },
+          "error": {
+            "type": "string",
+            "example": "Message error"
+          },
+          "message": {
+            "type": "string",
+            "example": "Message"
+          },
+          "validation": {
+            "type": "object",
+            "properties": {
+              "params": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "example": "source"
+                  },
+                  "keys": {
+                    "type": "string",
+                    "example": "[\"keys\"]"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "\"keys\" message"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "GlobalError": {
         "type": "object",
         "properties": {
@@ -355,10 +923,59 @@
             "example": "Message Error"
           }
         }
+      },
+      "SessionUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "Email"
+          },
+          "password": {
+            "type": "string",
+            "example": "Password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RefreshUserTokenRequest": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "Refresh Token"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "RefreshUserTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "Token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "Refresh Token"
+          }
+        }
       }
     },
     "examples": {
       "GetAllUserResponse": {
+        "value": {
+          "id": "ccc36944-e633-41c0-a119-2616cb70968d",
+          "email": "johndoe@gmail.com",
+          "name": "John Doe"
+        }
+      },
+      "GetUserResponse": {
         "value": {
           "id": "ccc36944-e633-41c0-a119-2616cb70968d",
           "email": "johndoe@gmail.com",
@@ -372,11 +989,25 @@
           "$name": "John Doe"
         }
       },
+      "UpdateUserRequest": {
+        "value": {
+          "$email": "johndoe2@gmail.com",
+          "password": "JohnDoe123456",
+          "$name": "John Doe 2.0"
+        }
+      },
       "CreateUserResponse": {
         "value": {
           "id": "ccc36944-e633-41c0-a119-2616cb70968d",
           "email": "johndoe@gmail.com",
           "name": "John Doe"
+        }
+      },
+      "UpdateUserResponse": {
+        "value": {
+          "id": "ccc36944-e633-41c0-a119-2616cb70968d",
+          "email": "johndoe2@gmail.com",
+          "name": "John Doe 2.0"
         }
       },
       "InternalServerError": {
@@ -391,10 +1022,166 @@
           "message": "email-already-in-use"
         }
       },
+      "AuthTokenNotFound": {
+        "value": {
+          "status": "Unauthorized",
+          "message": "auth-token-not-found"
+        }
+      },
+      "InvalidToken": {
+        "value": {
+          "status": "Unauthorized",
+          "message": "invalid token"
+        }
+      },
+      "JwtMalformed": {
+        "value": {
+          "status": "Unauthorized",
+          "message": "jwt malformed"
+        }
+      },
+      "InvalidTokenFormat": {
+        "value": {
+          "status": "Unauthorized",
+          "message": "invalid-token-format"
+        }
+      },
       "NotFound": {
         "value": {
           "status": "Not Found",
           "message": "user-not-found"
+        }
+      },
+      "CelebrateParamsErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "params",
+              "keys": "[\"userId\"]",
+              "message": "\"userId\" must be a valid GUID"
+            }
+          }
+        }
+      },
+      "CelebrateUserEmailRequiredErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"email\"]",
+              "message": "\"email\" is required"
+            }
+          }
+        }
+      },
+      "CelebrateRefreshTokenRequiredErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"refreshToken\"]",
+              "message": "\"refreshToken\" is required"
+            }
+          }
+        }
+      },
+      "CelebrateUserPasswordRequiredErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"password\"]",
+              "message": "\"password\" is required"
+            }
+          }
+        }
+      },
+      "CelebrateUserNameRequiredErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"name\"]",
+              "message": "\"name\" is required"
+            }
+          }
+        }
+      },
+      "CelebrateUserPasswordErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"password\"]",
+              "message": "\"password\" length must be at least 8 characters long"
+            }
+          }
+        }
+      },
+      "CelebrateUserNameErrorResponse": {
+        "value": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Validation failed",
+          "validation": {
+            "params": {
+              "source": "body",
+              "keys": "[\"name\"]",
+              "message": "\"name\" length must be less than or equal to 30 characters long"
+            }
+          }
+        }
+      },
+      "CredentialsInvalid": {
+        "value": {
+          "status": "Bad Request",
+          "message": "invalid-credentials"
+        }
+      },
+      "SessionUserRequest": {
+        "value": {
+          "$email": "johndoe@gmail.com",
+          "$password": "Johndoe356"
+        }
+      },
+      "SessionUserResponse": {
+        "value": {
+          "user": {
+            "id": "ccc36944-e633-41c0-a119-2616cb70968d",
+            "email": "johndoe@gmail.com",
+            "name": "John Doe"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDEzNjExMDAsImV4cCI6MTcwMTQ0NzUwMCwic3ViIjoiYjg5MjBlZDQtZjgzZi00NjUzLTgzYmUtNzRkODVjYTA3NTQ5In0.lkROMDwg8CQ5dqprfFSjqW8E-XtextkDeuVQyRglwmU",
+          "refreshToken": "4faaab56-b640-42c4-9fcd-1d31cd89b991"
+        }
+      },
+      "RefreshUserTokenRequest": {
+        "value": {
+          "$refreshToken": "4faaab56-b640-42c4-9fcd-1d31cd89b991"
+        }
+      },
+      "RefreshUserTokenResponse": {
+        "value": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDEzNjA3MTUsImV4cCI6MTcwMTQ0NzExNSwic3ViIjoiYjg5MjBlZDQtZjgzZi00NjUzLTgzYmUtNzRkODVjYTA3NTQ5In0.ODiPSE6b2ZNpzDyeuIl3GKhs_i8uDWtdKo6kj3SwwVI",
+          "refreshToken": "545714d4-e0ea-42b2-ab54-7fddd261f061"
         }
       }
     }
