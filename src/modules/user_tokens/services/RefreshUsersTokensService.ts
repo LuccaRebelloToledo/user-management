@@ -6,17 +6,13 @@ import IUsersTokensRepository from "../repositories/IUsersTokensRepository";
 import UsersRepository from "../../user/infra/typeorm/repositories/UsersRepository";
 import UsersTokensRepository from "../infra/typeorm/repositories/UsersTokensRepository";
 
+import IRefreshUsersTokensServiceDTO from "../dtos/IRefreshUsersTokensServiceDTO";
+
 import AppError from "../../../shared/infra/errors/AppError";
 import { AppErrorType } from "../../../shared/infra/errors/AppErrorType";
 
 import { sign } from "jsonwebtoken";
 import authConfig from "../../../config/auth";
-
-interface IRefreshUsersTokensServiceDTO {
-  userId: string;
-  refreshToken: string;
-}
-
 @injectable()
 class RefreshUsersTokensService {
   constructor(

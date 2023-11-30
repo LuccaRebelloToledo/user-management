@@ -15,10 +15,7 @@ import UsersRepository from "../../user/infra/typeorm/repositories/UsersReposito
 import UsersTokensRepository from "../infra/typeorm/repositories/UsersTokensRepository";
 import BCryptHashProvider from "../../user/providers/hash-provider/implementations/BCryptHashProvider";
 
-interface IAuthenticateUserDTO {
-  email: string;
-  password: string;
-}
+import IAuthenticateUserDTO from "../dtos/IAuthenticateUserDTO";
 
 @injectable()
 class AuthenticateUserService {
