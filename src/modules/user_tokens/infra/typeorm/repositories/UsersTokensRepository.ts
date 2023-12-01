@@ -12,6 +12,7 @@ import IGenerateUserTokenDTO from "../../../dtos/IGenerateUserTokenDTO";
 import IFindUserTokenByTokenDTO from "../../../dtos/IFindUserTokenByTokenDTO";
 import IDeleteUserTokenByTokenDTO from "../../../dtos/IDeleteUserTokenByTokenDTO";
 import IDeleteUserTokenByUserIdDTO from "../../../dtos/IDeleteUserTokenByUserIdDTO";
+import IFindUserTokenByIdDTO from "../../../dtos/IFindUserTokenByIdDTO";
 
 @singleton()
 class UsersTokensRepository implements IUsersTokensRepository {
@@ -34,6 +35,18 @@ class UsersTokensRepository implements IUsersTokensRepository {
   ): Promise<UserToken | undefined> {
     const userToken = await this.usersTokensRepository.findOne({
       where: token,
+    });
+
+    if (userToken) {
+      return userToken;
+    }
+  }
+
+  public async findByTokenByID(
+    userId: IFindUserTokenByIdDTO
+  ): Promise<UserToken | undefined> {
+    const userToken = await this.usersTokensRepository.findOne({
+      where: userId,
     });
 
     if (userToken) {
